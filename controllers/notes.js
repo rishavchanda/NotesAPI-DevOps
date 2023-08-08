@@ -5,7 +5,7 @@ export const getNotes = (req, res) => {
   notes
     .find()
     .then((data) => {
-      res.status(200).json(data);
+      res.status(200).json({ notes: data });
     })
     .catch((err) => {
       console.log("Error: ", err.message);
