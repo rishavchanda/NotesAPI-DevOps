@@ -1,5 +1,20 @@
 import notes from "../models/notes.js";
 
+// Ping the database
+export const ping = async (req, res) => {
+  try {
+    // Check if you can connect to the database and read at least one data
+    const data = await notes.findOne();
+    if (data) {
+      res.status(200).send("Ok");
+    } else {
+      res.status(500).send("Database read error");
+    }
+  } catch (error) {
+    res.status(500).send("Database connection error");
+  }
+};
+
 // Get all notes
 export const getNotes = (req, res) => {
   notes

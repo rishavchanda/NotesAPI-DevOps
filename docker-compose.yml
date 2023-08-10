@@ -3,11 +3,10 @@ services:
   # API Container
   api:
     build: .
-    ports:
-      - "8800:8800"
     environment:
-      # Set environment variables if required
       MONGO_URL: "mongodb://database:27017"
+    expose:
+      - "8800"
     depends_on:
       - database
 
@@ -16,10 +15,20 @@ services:
     container_name: db_container
     image: mongo:latest
     restart: always
-    volumes: 
+    volumes:
       - mongo_db:/data/db
     ports:
       - "27017:27017"
+
+  # Nginx Container
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80" # Map container's port 80 to host's port 8080
+    volumes:
+      - /home/rishav/nginx:/etc/nginx/conf.d # Map the entire nginx directory to the container's /etc/nginx/conf.d directory
+    depends_on:
+      - api
 
 volumes:
   mongo_db: {}
